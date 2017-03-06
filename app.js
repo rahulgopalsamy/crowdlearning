@@ -28,7 +28,7 @@ var app = express();
 
 
 app.set('view engine', 'ejs');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 // setting store for saving session
 var store = new MongoDBStore(
       {
