@@ -1,0 +1,81 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Crowdlearning | Quiz</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+        <link rel="icon"  type="image/png" href="/img/crowdlearning.png">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ 
+</head>
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/<%=link%>/<%=classname%>/coursepage"><%= classname%></a></li>
+        <li><a href="/<%= link%>/home">Course</a></li>
+        <li><a href="/user/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+    <div class="container"> 
+        <div class="row center top-margin">
+        <div class="card col s12 <%=color%> white-text">
+                                        <strong><%=answer%></strong>
+            </div>
+        </div>
+        
+                      <div class="row">
+                  <div class="col s6 center">
+           <h4 class="red-text">Score: <%=score%> </h4>
+                  
+                  </div>
+                  <div class="col s6 center">
+                  <a class="waves-effect waves-light btn orange z-depth-3" href="/student/<%=classname%>/quiz/<%=id%>">Next</a>
+                  </div>
+                </div>      
+       <div class="card z-depth-2 top-margin">
+           <div class="card-content">
+               <span class="card-title orange-text">Question <%= number%></span>
+                <%- data.question%>
+           </div>
+        </div>
+           <div class="card z-depth-2">
+           <div class="card-content">
+               <span class="card-title orange-text">Answer Choice</span>
+                            
+             
+                       
+<% for(var i=0; i < data.options.length; i++) { %>
+  
+                        <p>
+                          <input name="answer" type="radio" value="option<%=i+1%>" id="<%-data.options[i]%>" disabled/>
+                          <label for="<%-data.options[i]%>"><%-data.options[i]%></label><br>
+                        </p>
+  
+<% } %>
+  
+<br>
+            <div class="row orange-text center"> The right answer for this question is <%-data.correctanswer%></div>                
+                   
+           </div>
+        </div> 
+          <div class="card z-depth-2">
+           <div class="card-content">
+               <span class="card-title orange-text">Explanation</span>
+               
+               <br>
+                <%- data.explanation%>
+           </div>
+        </div>   
+
+           </div>
+    </body>
+</html>

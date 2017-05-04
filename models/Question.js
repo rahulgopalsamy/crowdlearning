@@ -1,6 +1,5 @@
 var mongoose = require("mongoose");
 
-
 var QuestionSchema = mongoose.Schema ({
     _class:{type: mongoose.Schema.Types.ObjectId, ref:'Class', required:true},
     _lead:{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true},

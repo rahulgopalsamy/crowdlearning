@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | Quiz</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -16,7 +16,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/instructor/<%= classname%>/coursepage"><%= classname%></a></li>
         <li><a href="/instructor/home">Course</a></li>
@@ -37,12 +37,11 @@
                     </div>
         </div>
           <div class="card">
-             <table class="highlight">
+             <table class="highlight centered">
                 <thead>
                   <tr>
                       <th>Brick</th>
                       <th>Question</th>
-                      <th>Created At</th>
                       <th>Right answers</th>
                       <th>Discriminatory Index</th>
                       <th>Add</th>
@@ -51,9 +50,8 @@
                 <tbody>
                  <% for(var i=0; i < data.length; i++) { %>
                        <tr>
-                         <td><%- data[i]._brick %></td>
-                         <td><%- data[i].question %></td>
-                         <td><%= data[i].created_at%></td>
+                         <td><%- data[i]._brick.brickname %></td>
+                         <td style="text-overflow:ellipsis"><%- data[i].question %></td>
                          <td><%- data[i].right%></td>
                          <td><%-data[i].wrong%></td>
                          <td> <input type="checkbox" value="<%- data[i]._id %>" id="quiz<%=i%>" name="questionId">
@@ -70,9 +68,7 @@
         </div>
           </form>
   </div>  
-    <script>
- 
-    </script>
+    
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | Approval</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -16,7 +16,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a  id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/<%=link%>/<%=classname%>/coursepage"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -27,23 +27,22 @@
     <div class="container"> 
       <div clas="row top-margin">
           <h4 class="orange-text">Question approval</h4>
+          Number of Questions waiting for approval: <%=data.length%>
           <div class="card">
-             <table class="highlight">
+             <table class="highlight centered">
                 <thead>
                   <tr>
                       <th>Brick</th>
                       <th>Question</th>
-                      <th>Created At</th>
-                      <th>Status</th>
+                      <th>Evaluated By</th>
                     </tr>
                 </thead>
                 <tbody>
                      <% for(var i=0; i < data.length; i++) { %>
                        <tr>
-                         <td><%= data[i]._brick %></td>
-                         <td><a href="/instructor/<%= classname%>/edit/<%=data[i]._id%>"><%- data[i].question %></a></td>
-                         <td><%= data[i].created_at%></td>
-                         <td><%= data[i].approved%></td>
+                         <td><%= data[i]._brick.brickname %></td>
+                         <td style="text-overflow:ellipsis"><a href="/instructor/<%= classname%>/edit/<%=data[i]._id%>"><%- data[i].question %></a></td>
+                         <td><%= data[i]._evaluate.length%></td>
                        </tr>
                     <% } %>
                 </tbody>

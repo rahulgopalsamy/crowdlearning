@@ -16,7 +16,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a id="brand-image" class="brand-logo">CL | Bricks</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a href="/instructor/<%=classname%>/coursepage"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -29,19 +29,14 @@
     <form id="registration-form" class="col s12 card-panel z-depth-3 top-margin" method="post" action="/instructor/<%=classname%>/addbrick">
       <div class="row">
           <fieldset>
-              <legend class="orange-text">Add Brick</legend>
+              <legend class="orange-text">Add Topic</legend>
         
           <div class="input-field col s12">
               <i class="material-icons prefix">label</i>
           <input name="brickname" id="icon_prefix" type="text" class="validate" required>
-          <label for="icon_prefix">Brick Name</label>
+          <label for="icon_prefix">Topic Name</label>
         </div>
-          
-           <div class="input-field col s12">
-              <i class="material-icons prefix">vpn_key</i>
-          <input name="description" id="icon_prefix" type="text">
-          <label for="icon_prefix">Description</label>
-        </div>
+        
             <div class="row center">
                <button class="btn waves-effect waves-light orange" type="submit">Submit
     <i class="material-icons right">send</i>
@@ -51,11 +46,11 @@
         </div>
     </form>
     <div class="row center blue-text">
-    <a href="/instructor/<%=classname%>/coursepage">Done</a>
+    <a href="/instructor/<%=classname%>/coursepage">Go to Course Page</a>
     </div>
        <div class="row center">
            <div class="card">
-                <span class="card-title">Previously created bricks for <%= classname%> with token <%= token%></span>
+                <span class="card-title">Previously created Topics for <%= classname%> - <%= token%></span>
                 <table class="striped">
                 <% for(var i=0; i < data.length; i++) { %>
                    <tr>

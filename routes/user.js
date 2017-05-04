@@ -4,6 +4,7 @@ var mongoose= require('mongoose');
 var passport = require ('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 
 // database connection to this route 
 var User = require ('../models/User');
@@ -18,6 +19,9 @@ router.get('/register', function(req, res){
 //Registering user into crowdlearning application 
 
 router.post('/register', function(req,res){
+    if (req.body.role == "Instructor"){
+        if(req.body.passcode != "cl2017an") return res.render("error",{error:"Sorry the passcode is wrong, please go back and try again"});  
+    }
      var newUser = new User({
         firstname:req.body.firstname, 
         lastname:req.body.lastname, 
@@ -29,6 +33,9 @@ router.post('/register', function(req,res){
     })
     newUser.createUser(newUser, function(err, user){
         if (err){
+            if(err.name ==='MongoError' && err.code ===11000){
+                return res.render('error',{error:"Username already exist, please try registering with another username"});
+            }
             res.send(err);
         } else {
             req.login(user, function(err){
@@ -51,7 +58,7 @@ router.post('/login', function(req, res, done){
         User.findOne({username:req.body.username}).exec(function(err, user){
                 if (err){res.send(err);}
         if(!user){
-           returnres.render("error", {error:"Sorry you have not registered in crowdlearning! :("});
+           return res.render("error", {error:"Sorry you have not registered in crowdlearning! :("});
         }
 
         if(!bcrypt.compareSync(req.body.password, user.password)){

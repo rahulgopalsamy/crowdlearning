@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | Create</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -14,7 +14,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo" >CrowdLearning</a>
+      <a id="brand-image" class="brand-logo" >CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/<%=link%>/<%=classname%>/coursepage"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -37,7 +37,7 @@
                 <ul class="collapsible" data-collapsible="expandable">
                                         <li>
                       <div id="content" class="collapsible-header"><i class="material-icons">search
-                            </i>Brick</div>
+                          </i>Topic : <span id="brickDisplay"></span> </div>
                      <div class="collapsible-body">
                          <select name="brickId" id="mybrick" required>
                              <option disabled selected>Choose your option</option>
@@ -54,12 +54,7 @@
                         <textarea id="textarea1" name="question" class="materialize-textarea" required></textarea>
                         </div>
                     </li>
-                    <li>
-                      <div class="collapsible-header"><i class="material-icons">assignment</i>Explanation</div>
-                      <div class="collapsible-body">
-                        <textarea id="textarea2" name="explanation" class="materialize-textarea" required></textarea>
-                        </div>
-                    </li>
+                    
                     <li>
                       <div class="collapsible-header"><i class="material-icons">launch</i>Answer/Distractors</div>
                       <div class="collapsible-body">
@@ -73,11 +68,17 @@
                           <br>                          <h8><b>Choose the right answer from the above options:</b></h8>
   
       <div class="option_wrapper">
-      <input type="radio" name="correctanswer" value="option1" id="test1" required/>
+      <input type="radio" name="correctanswer" value="option1" id="test1" />
       <label for="test1" >Option1</label>
       <input type="radio" name="correctanswer" value="option2" id="test2" />
       <label for="test2">Option2</label>
     </div>
+                        </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header"><i class="material-icons">assignment</i>Explanation</div>
+                      <div class="collapsible-body">
+                        <textarea id="textarea2" name="explanation" class="materialize-textarea" required></textarea>
                         </div>
                     </li>
                   </ul>
@@ -112,10 +113,10 @@
         e.preventDefault(); $(this).parent('div').remove(); x--;
     });
     
-    var str = $("#mybrick option:selected").text();
-         console.log(str);
-         $(str).appendTo("#content");
-    
+     $("#mybrick").change(function(){
+         var selection = $('#mybrick option:selected').text();
+       $("#brickDisplay").replaceWith("<span id='brickDisplay'>"+selection+"</span>");  
+     });      
     
   });
 
@@ -130,5 +131,6 @@
   ga('send', 'pageview');
 
 </script>
+
     </body>
 </html>

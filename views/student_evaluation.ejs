@@ -2,12 +2,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | Evaluation</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/student_evaluation.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-
         <link rel="icon"  type="image/png" href="/img/crowdlearning.png">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
@@ -17,7 +16,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/<%=link%>/<%=classname%>/coursepage"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -58,63 +57,57 @@
                                     </div>     
                      </div>
 <form method="post" action="/student/<%= classname%>/evaluate">
-                     <div class="col s4">
-                           <div class="card-content">
-                                    <div class="row card">
-                                    <span class="card-title orange-text">Stem of Question:</span>
-                                      <div class="card-action">
-                                        <select name="stem" class="icon" >
-                                          <option disabled selected>Choose your option</option>
-                                          <option value="clear" data-icon="/img/happy.jpg" class="left circle">Clearly stated and eay to understand</option>
-                                          <option value="Ambiguous" data-icon="/img/unhappy.png" class="left circle">Ambiguous, misleading</option>
-                                          <option value="Bad" data-icon="/img/sad.png" class="left circle">Bad, definitely needs revision</option>
+                     <div class=" card col s4 z-depth-2 white-text blue-grey darken-2">
+                                    <div class="row">
+                                    <h6 class="orange-text top-margin">Clarity / Language</h6>
+        
+                                        <select name="clarity" class="icon"  >
+                                          <option disabled selected>Choose your opinion</option>
+                                          <option value="clear"  class="left circle">Clearly stated and understandable</option>
+                                          <option value="ambiguous"  class="left circle">Few mistakes</option>
+                                          <option value="bad"  class="left circle">Needs further revision</option>
                                         </select>
-                                          </div>
+                                  
                                       </div>     
                                     
-                                <div class="card-content">
-                                    <div class="row card">
-                                    <span class="card-title orange-text">Language:</span>
-                                      <div class="card-action">
-                                        <select name="clarity_lan" class="icon">
-                                          <option value="" disabled selected>Choose your option</option>
-                                          <option value="clear"  data-icon="/img/happy.jpg" class="left circle">Clear</option>
-                                          <option value="ambiguous" data-icon="/img/unhappy.png" class="left circle">Few mistakes</option>
-                                          <option value="bad" data-icon="/img/sad.png" class="left circle">Needs revision</option>
+                                
+                                    <div class="row">
+                                    <h6 class=" orange-text">Conceptual Difficulty</h6>
+                                        <select name="difficulty" class="icon">
+                                          <option value="" disabled selected>Choose your opinion</option>
+                                          <option value="challenging"  class="left circle">Challenging</option>
+                                          <option value="average"  class="left circle">Average</option>
+                                          <option value="low"  class="left circle">Testing Memory (Low)</option>
                                         </select>
-                                          </div>
+                                         
                                       </div> 
                                     
                                     
-                             <div class="card-content">
-                                    <div class="row card">
-                                    <span class="card-title orange-text">Question Setup:</span>
-                                      <div class="card-action">
-                                        <select name="question_setup" class="icon">
-                                          <option value="" disabled selected>Choose your option</option>
-                                          <option value="intersting" data-icon="/img/happy.jpg" class="left circle">Interesting</option>
-                                          <option value="average" data-icon="/img/unhappy.png" class="left circle">Not bad</option>
-                                          <option value="3" data-icon="/img/sad.png" class="left circle">Needs improvement</option>
+                             
+                                    <div class="row">
+                                    <h6 class="orange-text">Creativity / Engagement</h6>
+                                        <select name="creativity" class="icon">
+                                          <option value="" disabled selected>Choose your opinion</option>
+                                          <option value="intersting" data-icon="/img/happy.jpg" class="left circle">Intersting Problem setup</option>
+                                          <option value="average" data-icon="/img/unhappy.png" class="left circle">Tricky</option>
+                                          <option value="boring" data-icon="/img/sad.png" class="left circle">Not engaging</option>
+                                        </select>
+                                      </div> 
+                    
+                         
+                         <div class="row">
+                                    <h6 class="orange-text">Time Requirement</h6>
+                                      
+                                        <select name="time" class="icon">
+                                          <option value="" disabled selected>Choose your opinion</option>
+                                          <option value="good" class="left circle">solvable within 5 mins</option>
+                                          <option value="bad" class="left circle">Takes longer time to solve</option>
                                         </select>
                                           </div>
-                                      </div> 
-                                    
-                                    
-                            <div class="card-content">
-                                    <div class="row card">
-                                    <span class="card-title orange-text">Predicted rating:</span>
-                                      <div class="card-action">
-                                        <select name="predicted" class="icon">
-                                          <option value="" disabled selected>Choose your option</option>
-                                          <option value="good" data-icon="/img/happy.jpg" class="left circle">Top rated</option>
-                                          <option value="average" data-icon="/img/unhappy.png" class="left circle">Average</option>
-                                          <option value="bad" data-icon="/img/sad.png" class="left circle">Bad</option>
-                                        </select>
-                                          </div>
-                                      </div> 
+                                      
                                         <div class="input-field">
                                           <textarea name="comments" id="textarea1" class="materialize-textarea"></textarea>
-                                          <label class="orange-text" for="textarea1">Additional Comments:</label>
+                                          <label class="orange-text" for="textarea1">Suggestions:</label>
                                         </div>
                                         <div class="row center">
                                            <button class="btn waves-effect waves-light orange z-depth-4" type="submit">Submit</button>

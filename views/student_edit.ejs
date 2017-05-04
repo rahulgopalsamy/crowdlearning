@@ -1,0 +1,107 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>CL | Edit Questions</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+        <link rel="icon"  type="image/png" href="/img/crowdlearning.png">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    
+</head>
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/<%=link%>/<%=classname%>/coursepage"><%= classname%></a></li>
+        <li><a href="/<%= link%>/home">Course</a></li>
+        <li><a href="/user/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+    <div class="container">
+      <div class="col s8">
+                <div class="row top-margin">
+                    <form method="post" action="/student/<%=classname%>/edit/<%=data._id%>">
+      
+                                       
+                      <div class="row center">Topic: <%-data._brick.brickname%></div>
+                    
+                    
+                      <div class="row"><h4>Question Body</h4>
+                      <textarea id="textarea1" name="question" class="materialize-textarea" required><%- data.question%></textarea>
+                      </div>
+                      
+                      <div class="row">
+                        <h4>Answer/Distractors</h4>
+                        <% for(var i=0; i < data.options.length; i++) { %>
+                        <p>
+                            <h8>Option<%=i+1%></h8>
+                        <div class="input_fields_wrap">  
+                          <input name="options" type="text" id="option<%=i%>" value="<%-data.options[i]%>"/>
+                                </div>
+                        </p>
+  
+<% } %>
+                          
+                          <br><h8><b>The right answer selected by Lead is <%- data.correctanswer%></b></h8>
+                          <br><h8>Change the answer:</h8>
+                        </div>
+                    
+  
+      <div class="option_wrapper">
+      <input type="radio" name="correctanswer" value="option1" id="test1" />
+      <label for="test1" >Option1</label>
+      <input type="radio" name="correctanswer" value="option2" id="test2" />
+      <label for="test2">Option2</label>
+          <input type="radio" name="correctanswer" value="option3" id="test3" />
+      <label for="test3">Option3</label>
+          <input type="radio" name="correctanswer" value="option4" id="test4" />
+      <label for="test4">Option4</label>
+    </div>
+                        
+                      <div class="row">Explanation
+                      <textarea id="textarea2" name="explanation" class="materialize-textarea" required><%- data.explanation%></textarea>
+                        </div>   
+                  
+                  <div class="row center">
+                    <button class="btn waves-effect waves-light orange z-depth-4" type="submit">Submit</button>
+                  </div>
+              </form>
+                </div>
+                        <% for(var i=0; i < evalutate.length; i++) { %>
+
+        <div class="row">
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Evalutor <%=i%></span>
+              Creativity: <%- evaluate[i].creativity%>
+              Difficulty: <%- evaluate[i].difficulty%>
+              Clarity: <%- evaluate[i].clarity%>
+              Suggestion: <%- evaluate[i].comments%>
+            </div>>
+            </div>
+        </div>
+      </div>
+           <% } %>      
+</div>
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92848140-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    </body>
+</html>

@@ -10,12 +10,12 @@ var userSchema = mongoose.Schema({
     role:{type: String, enum:['Student','Instructor','Web Admin'], required:true},
     username: {type:String, required:true, unique:true, lowercase:true},
     password:{type: String,required:true},
-    ub_number:{type:Number, required:true},
     created_at:{type:Date, default:Date.now},
     updated_at:Date,
     _class:[{type:mongoose.Schema.Types.ObjectId, ref:'Class',unique:true}],
     _questions:[{type:mongoose.Schema.Types.ObjectId, ref:'Question'}],
-    _solved:[{type:mongoose.Schema.Types.ObjectId, ref:'QuestionBank', unique:true}],
+    _solved:[{type:mongoose.Schema.Types.ObjectId, ref:'QuestionBank'}],
+    _statistics:[{type:mongoose.Schema.Types.ObjectId, ref:'Statistics'}]
 });
 
 

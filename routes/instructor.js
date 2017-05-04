@@ -27,7 +27,7 @@ router.get('/home', function(req, res){
 router.route('/:classname/coursepage')
         .get(isInstructor,function(req,res){
             var bricks;
-            Class.findOne({classname:req.params.classname}).populate('_bricks _students').exec(function(err, myclass){
+            Class.findOne({classname:req.params.classname}).exec(function(err, myclass){
                 if(err) res.send(err);
                 if(myclass._bricks) {bricks = myclass._bricks; } 
                 else{
@@ -35,7 +35,7 @@ router.route('/:classname/coursepage')
                 } 
                 req.session.classId = myclass._id;
                 req.session.classname = myclass.classname;
-                res.render('instructor_coursepage',{link:"instructor", data:myclass._bricks, classname:myclass.classname});
+                res.render('instructor_coursepage',{link:"instructor", myclass:myclass, classname:myclass.classname});
             })
         });
 
@@ -81,7 +81,6 @@ router.route('/:classname/createquestion')
             })
         })
         .post(function(req,res){
-            console.log(req.body);
           var question = new QuestionBank();
             question._class = req.session.classId;
             question._lead = req.session.userId;
@@ -112,6 +111,33 @@ router.route('/:classname/createquestion')
                 res.redirect("/instructor/"+ req.session.classname +"/coursepage");
    });
 });
+
+router.route('/joinclass')
+        .get(isLoggedIn, function(req,res){
+          res.render('common_join_class', {link:"instructor"})  
+            })
+         .post(function(req,res){
+             Class.findOne({classtoken:req.body.classtoken}, function(err, myclass){
+                         if(err) return res.send(err);
+                         if(!myclass){
+                                    return res.render("error",{ error:"Sorry the class you searched for is not available in crowdlearning! :("});
+                                  }        
+                        
+                                    User.findById(req.session.userId, function(err, myuser){
+                                        if(err) return res.send(err);
+                                        myuser._class.push(myclass);
+                                        myuser.save();   
+                                        myclass._instructor.push(myuser);
+                                        myclass.save();
+                                 
+                                    req.session.classId = myclass._id;
+                                    req.session.classname = myclass.classname;
+                                 res.redirect('/instructor/'+ myclass.classname+'/coursepage');
+                        
+             });   
+            });
+         });
+
 
 //adding bricks to the class
 router.route('/:classname/addbrick')
@@ -150,13 +176,32 @@ router.route('/:classname/addbrick')
 router.route('/:classname/questions')
         .get(isInstructor, function(req, res){
             var evaluation = [];
-            Class.findById(req.session.classId).populate('_questions').exec(function(err, myevaluation){
+            Class.findById(req.session.classId).populate({path:'_questions', populate:{path:'_brick', model:'Brick'}})
+            .exec(function(err, myevaluation){
                if(err) res.send(err);
                if(myevaluation._questions) evaluation = myevaluation._questions;
                 res.render('instructor_approval', {name:"Instructor", link:"instructor", classname:req.params.classname, data:evaluation});
             })
         })
       
+router.route('/:classname/questionbank')
+        .get(isInstructor, function(req, res){
+            
+            Class.findById(req.session.classId).populate({path:'_questionBank', populate:{path:'_brick', model:'Brick'}})
+            .exec(function(err, myevaluation){
+               if(err) res.send(err);
+                res.render('instructor_viewquestions', {name:"Instructor", link:"instructor", classname:req.params.classname,data:myevaluation._questionBank});
+            })
+        })
+
+router.route('/:classname/show/:questionId')
+            .get(isInstructor, function(req, res){
+                QuestionBank.findById(req.params.questionId).exec(function(err, myquestion){
+                    res.render('common_display',{link2:"questionbank", link:"instructor", classname:req.params.classname, data:myquestion})
+                })
+            })
+
+
 
 router.route('/:classname/edit/:questionId')
             .get(isInstructor, function(req, res){
@@ -165,7 +210,6 @@ router.route('/:classname/edit/:questionId')
                 })
             })
           .post(isInstructor, function(req, res){
-              console.log(req.body);
               
                 var qb = new QuestionBank;
                 Question.findById(req.params.questionId, function(err, myquestion){
@@ -181,10 +225,10 @@ router.route('/:classname/edit/:questionId')
                     qb.explanation = req.body.explanation;
                     qb.question = req.body.question;
                     qb.save(function(err, qb){
-                        if(err) throw err;
+                        if(err) return res.send(err);
                     User.findByIdAndUpdate(qb._lead,{$pull:{_questions:req.params.questionId}}, function(err, myuser){
                     if(err) return res.send(err); 
-                     myuser._questions.push(qb);
+                     myuser._solved.push(qb);
                      myuser.save();
                          });
                      Class.findById(qb._class, function(err, myclass){
@@ -202,7 +246,6 @@ router.route('/:classname/edit/:questionId')
                 Question.findByIdAndRemove(req.params.questionId, function(err){
                     if(err) throw err;
                 })
-                
                 res.redirect('/instructor/'+req.params.classname+'/questions');
             })
 
@@ -210,7 +253,8 @@ router.route('/:classname/edit/:questionId')
 router.route("/:classname/quiz")
         .get(isInstructor, function(req, res){
             var evaluation = [];
-            Class.findById(req.session.classId).populate('_questionBank _questionBank._brick').exec(function(err, myevaluation){
+            Class.findById(req.session.classId).populate({path:'_questionBank', populate:{path:'_brick', model:'Brick'}})
+            .exec(function(err, myevaluation){
                if(err) res.send(err);
                if(myevaluation._questions) evaluation = myevaluation._questionBank;
                 res.render('instructor_quiz', {link:"instructor", classname:req.params.classname, data:evaluation});
@@ -218,17 +262,14 @@ router.route("/:classname/quiz")
         })
         .post(isInstructor, function(req, res){
             var questions;
-            console.log(req.body);
             var quiz = new Quiz;
             quiz._class = req.session.classId;
             quiz.quiz_name = req.body.quiz_name;
             for (questions of req.body.questionId) {
                        quiz._questions.push(questions);
                     }
-                    console.log(quiz._questions);
             quiz.save(function(err, myquiz){
                 if(err) return res.send(err);
-                console.log(myquiz);
                 Class.findById(req.session.classId, function(err, myclass){
                     if (err) res.send("Some error occured while saving");
                 myclass._quizzes.push(myquiz);
@@ -242,7 +283,6 @@ router.route("/:classname/quiz")
 
 router.get("/:classname/quiz/performance", isInstructor, function(req, res){
         Class.findById(req.session.classId).populate('_quizzes').exec(function(err, myclass){
-            console.log(myclass);
             res.render("instructor_quiz_performance",{link:"instructor", classname:req.params.classname, data:myclass});
         })
 })
@@ -250,20 +290,15 @@ router.get("/:classname/quiz/performance", isInstructor, function(req, res){
 router.route("/:classname/quizperformance")
         .get(isInstructor, function(req, res){
            Class.findById(req.session.classId).populate("_quizzes").exec(function(err, myclass){
-               console.log(myclass);
                res.send("done");
            })
         })
-
-
-
-router.get("/:classname/quiz/performance", isInstructor, function(req, res){
-
-
-
-})
-
-
-
+router.route("/:classname/evalutor")
+    .get(isInstructor, function(req, res){
+        Class.findById(req.session.classId).populate("_students _questions").exec(function(err, myevalutor){
+            console.log(myevalutor);
+            res.send('end');
+        })
+    })
 
 module.exports = router;

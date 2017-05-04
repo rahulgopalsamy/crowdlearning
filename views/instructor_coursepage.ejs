@@ -2,21 +2,22 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | <%= classname%></title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/student_coursepage.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
 
         <link rel="icon"  type="image/png" href="/img/crowdlearning.png">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    
 </head>
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li class="active"><a href="#"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -28,12 +29,18 @@
         <div class="row top-margin">
         <div class="card  z-depth-2">
     <div class="card-content">
-        <p><strong>Instructor</strong>, please use the appropriate link below to perform desired activity in CrowdLearning!</p>
+        <div class="row">
+            <div class = "col s4 center">Number of Students <br><div class="teal-text"><h3><%= myclass._students.length%></h3></div></div>
+                <div class = "col s4 center">Number of Topics <br><div class="teal-text"><h3><%= myclass._bricks.length%></h3></div></div>
+                    <div class = "col s4 center">Number of Questions <br><div class="teal-text"><h3><%= myclass._questionBank.length%></h3></div></div>
+            </div>
+       
     </div>
+             <div class="divider"></div>
     <div class="card-tabs">
-      <ul class="tabs tabs-fixed-width">
-          <li class="tab"><a  href="#approve">Approve</a></li>
-        <li class="tab"><a href="#create" class="active">Create</a></li>
+      <ul id="swipe-tabs" class="tabs tabs-fixed-width">
+        <li class="tab"><a href="#create">Create</a></li>
+          <li class="tab"><a  href="#controller" class="active">Controller</a></li>
         <li class="tab"><a href="#quiz">Quiz</a></li>
       </ul>
     </div>
@@ -41,15 +48,20 @@
       <div id="create">
               <div class="collection">
          <a href="/instructor/<%=classname%>/createquestion" class="collection-item">Create a new question</a>
-         <a href="#" class="collection-item">Work on your drafts</a>
+         <a href="/instructor/<%=classname%>/evalutor" class="collection-item"> Create a Evaluation Session</a>
+         <a href="/instructor/<%=classname%>/your_drafts" class="collection-item">Work on your drafts</a>
       </div>
         </div>
-      <div id="approve">
+      <div id="controller">
+          <div class="collection">
+              <a href="/instructor/<%=classname%>/questionbank" class="collection-item">View questions in Question Bank</a>
          <a href="/instructor/<%=classname%>/questions" class="collection-item">Approve questions created by students</a>
+              <a href="#" class="collection-item">Class performance tracker</a>
+              </div>
         </div>
       <div id="quiz">
           <div class="collection">
-            <a href="/instructor/<%=classname%>/quiz" class="collection-item">Create Quiz for class</a>
+            <a href="/instructor/<%=classname%>/quiz" class="collection-item">Create quiz for class</a>
             <a href="/instructor/<%=classname%>/quiz/performance" class="collection-item">view class performance</a>
           </div>
         </div>
@@ -57,10 +69,11 @@
   </div>
             </div>
 <div class="row center top-margin">
-  <a href="/instructor/<%=classname%>/addbrick">Add Bricks</a> to <%= classname%>
+  <a href="/instructor/<%=classname%>/addbrick">Add Topics</a> to <%= classname%>
 </div>
 
   </div>
+           
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

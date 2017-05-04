@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 var ClassSchema = mongoose.Schema({
-    classtoken:{type:String,unique:true,required:true},
+    classtoken:{type:Number,unique:true,required:true},
     classname :{type:String,unique:true, required:true},
-    _instructor:{type: mongoose.Schema.Types.ObjectId, ref:'User', required:true},
+    _instructor:[{type: mongoose.Schema.Types.ObjectId, ref:'User', required:true}],
     _students :[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
     _bricks:[{type:mongoose.Schema.Types.ObjectId, ref:'Brick'}],
     _questions:[{type: mongoose.Schema.Types.ObjectId, ref:'Question'}],

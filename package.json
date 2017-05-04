@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^0.9.0",
+    "bcrypt": "^1.0.2",
     "bcryptjs": "*",
     "body-parser": "~1.12.0",
     "connect-flash": "*",
@@ -26,14 +27,19 @@
     "jade": "~1.9.2",
     "mongodb": "*",
     "mongoose": "*",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "~1.5.1",
+    "nodemailer": "^3.1.5",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
-    "serve-favicon": "~2.2.0"
+    "redis": "^2.6.5",
+    "serve-favicon": "~2.2.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "flightplan": "^0.6.15"
   },
   "description": ""

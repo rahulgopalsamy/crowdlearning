@@ -11,13 +11,14 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var dbConfig = require('./db.js');
 var assert = require('assert');
+var logger = require('winston');
 require('events').EventEmitter.prototype._maxListeners = 100;
 mongoose.Promise = global.Promise;
 //data model for passport module
 User = require("./models/User");
 
 //database connection
-mongoose.connect(dbConfig.url)
+mongoose.connect(dbConfig.url,{ mongos: true })
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
@@ -28,7 +29,7 @@ var app = express();
 
 
 app.set('view engine', 'ejs');
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 3000;
 // setting store for saving session
 var store = new MongoDBStore(
       {
@@ -68,6 +69,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 //middleware for routes conncetion
 app.use('/', routes);

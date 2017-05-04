@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
+
 var BrickSchema = mongoose.Schema({
-    brickname :{type:String, unique:true, required:true},
+    brickname :{type:String, required:true},
     description:{type:String},
     _class:{type: mongoose.Schema.Types.ObjectId, ref:'Class', required:true},
     _questions:[{type: mongoose.Schema.Types.ObjectId, ref:'Question'}],

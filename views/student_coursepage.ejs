@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Crowdlearning</title>
+  <title>CL | <%=classname%></title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/student_coursepage.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -17,7 +17,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li class="active"><a href="#"><%= classname%></a></li>
         <li><a href="/<%= link%>/home">Course</a></li>
@@ -29,35 +29,37 @@
         <div class="row top-margin">
         <div class="card z-depth-2">
     <div class="card-content">
-        <p><%= name%>, please use the appropriate link below to perform desired activity in CrowdLearning!</p>
+        <div class="row">
+            <div class = "col s4 center tooltipped" data-position="bottom" data-delay="50" data-tooltip="Total number of questions in question bank for this class">Question Bank <br><div class="teal-text"><h3><%=data._questionBank.length%></h3></div></div>
+                <div class = "col s4 center tooltipped" data-position="bottom" data-delay="50" data-tooltip="Total number of topics for this class">Number of Topics <br><div class="teal-text"><h3><%=data._bricks.length%></h3></div></div>
+                    <div class = "col s4 center tooltipped" data-position="bottom" data-delay="50" data-tooltip="Total number of submited questions">Your Questions<br><div class="teal-text"><h3></h3></div></div>
+            </div>
+       <div class="divider"></div>
     </div>
     <div class="card-tabs">
       <ul class="tabs tabs-fixed-width">
-          <li class="tab"><a  href="#solve">Solve</a></li>
-        <li class="tab"><a href="#create" class="active">Create</a></li>
-        <li class="tab"><a href="#evaluate">Collaborate</a></li>
+          <li class="tab"><a href="#create">Create</a></li>
+        <li class="tab"><a href="#controller" class="active">Controller</a></li>
+        <li class="tab"><a  href="#solve">Solve</a></li>
       </ul>
     </div>
     <div class="card-content grey lighten-4">
-      <div id="create">
+      <div id="controller">
               <div class="collection">
-         <a href="/student/<%=classname%>/createquestion" class="collection-item">Create a new question</a>
-         <a href="#" class="collection-item">Work on your drafts</a>
-        <a href="#" class="collection-item">Work on forked questions</a>
+         <a href="/student/<%=classname%>/myquestions" class="collection-item">View your questions</a>
+        <a href="#" class="collection-item">Review evaluation for your questions</a>
       </div>
         </div>
       <div id="solve">
         <div class="collection">
-         <a href="/student/<%=classname%>/solve" class="collection-item">Solve Questions from Question Bank</a>
-         <a href="#" class="collection-item">View your Questions in Question Bank</a>
-         <a href="#" class="collection-item">Take Quiz</a>
+         <a href="#" class="collection-item">Solve questions</a>
+         <a href="/student/<%=classname%>/quiz" class="collection-item">Take Quiz</a>
       </div>
         </div>
-      <div id="evaluate">
+      <div id="create">
           <div class="collection">
-            <a href="/student/<%=classname%>/evaluate" class="collection-item">Evaluate your peers work</a>
-            <a href="#" class="collection-item">Review evaluation for your questions</a>
-            <a href="#" class="collection-item">Fork your peer's question</a>
+              <a href="/student/<%=classname%>/createquestion" class="collection-item">Create a new question</a>
+            <a href="/student/<%=classname%>/evaluat" class="collection-item">Evaluate a question</a>
           </div>
         </div>
     </div>
@@ -74,5 +76,9 @@
   ga('send', 'pageview');
 
 </script>
+    <script>$(document).ready(function(){
+    $('.tooltipped').tooltip({delay: 50});
+  });
+       </script>
     </body>
 </html>
