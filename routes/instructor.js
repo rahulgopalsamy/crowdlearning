@@ -13,9 +13,10 @@ var Class = require('../models/Class');
 var User = require('../models/User');
 var Topic = require('../models/Topic');
 var Subject = require('../models/Subject')
+var Team = require('../models/Team')
 
 //middleware Connections
-var isLoggedIn = require('./middleware/isLoggedIn'); 
+var isLoggedIn = require('./middleware/isLoggedIn');
 var isInstructor = require('./middleware/isInstructor')
 
 
@@ -47,10 +48,10 @@ router.route('/class')
           Subject.find({}).exec(function(err, mysubject){
               if(err) throw err;
                 res.render('instructor_add_class', { data: mysubject, name:"Instructor", link:"instructor"})
-              })   
-            })     
+              })
+            })
          .post(function(req,res){
-            var myclass = new Class(); 
+            var myclass = new Class();
             myclass._subject = req.body.subject;
             myclass._instructor = req.session.userId;
             myclass.classname = req.body.classname;
@@ -76,12 +77,12 @@ router.route('/:classname/addtopic')
             var topics = [];
             Class.findOne({classname:req.params.classname}).populate('_topic', 'topicname').exec(function(err, myclass){
                 if(err) res.send(err);
-                if(myclass._topic) topics = myclass._topic;  
+                if(myclass._topic) topics = myclass._topic;
                 req.session.classId = myclass._id;
                 req.session.classname = myclass.classname;
                 req.session.subjectId = myclass.subjectId;
 
-                return res.render('instructor_add_topic',{link:"instructor", token:myclass.accesstoken ,classname:myclass.classname, data:topics});  
+                return res.render('instructor_add_topic',{link:"instructor", token:myclass.accesstoken ,classname:myclass.classname, data:topics});
             })
         })
         .post(function(req, res){
@@ -98,7 +99,7 @@ router.route('/:classname/addtopic')
                         myclass._topic.push(mytopic);
                         myclass.save();
                          res.redirect('/instructor/'+myclass.classname +'/addtopic')
-                    }) 
+                    })
             })
         });
 
@@ -109,7 +110,7 @@ router.route('/:classname/coursepage')
                 if(err) res.send(err);
                 req.session.classId = myclass._id;
                 req.session.classname = myclass.classname;
-                req.session.subjectId = myclass._subject;  
+                req.session.subjectId = myclass._subject;
                 res.render('instructor_coursepage',{link:"instructor", classname:myclass.classname});
             })
         });
@@ -121,64 +122,50 @@ router.route('/:classname/createquestion')
                 if(err) return res.send(err);
                 if(myclass._topic) topics = myclass._topic;
                 res.render('common_create',{name:"Instructor", link:"instructor", data:topics, classname:req.session.classname})
-            })  
+            })
          })
         .post(isInstructor, function(req,res){
-              var qb = new QuestionBank();
-              qb._creator = req.session.userId; 
-              qb._subject =req.session.subjectId; 
-              qb._class = req.session.classId;
-              qb._topic =  req.body.topic;
-              qb.question = req.body.question;
-              qb.options = req.body.options;
-              qb.isinstructorcreated = true;
-              qb.correctanswer = req.body.correctanswer;
-              qb.explanation = req.body.explanation;
-              console.log(qb);
-              console.log(req.body); 
-              qb.save(function(err, myqb){
-                if(err) throw err;
-                res.redirect('/instructor/'+req.params.classname+'/questionbank')
-              })
+             if (req.body.submission === "final") res.send("final")
+              else res.send("draft")
               });
 
 
 router.route('/joinclass')
         .get(isLoggedIn, isInstructor, function(req,res){
-          res.render('common_join_class', {link:"instructor"})  
+          res.render('common_join_class', {link:"instructor"})
             })
          .post(function(req,res){
              Class.findOne({accesstoken:req.body.accesstoken}, function(err, myclass){
                          if(err) return res.send(err);
                          if(!myclass){
                                     return res.render("error",{ error:"Sorry the class you searched for is not available in crowdlearning! :("});
-                                  }        
-                        
+                                  }
+
                                     User.findById(req.session.userId, function(err, myuser){
                                         if(err) return res.send(err);
                                         myuser._class.push(myclass);
-                                        myuser.save();   
+                                        myuser.save();
                                         myclass._instructor.push(myuser);
                                         myclass.save();
                                     req.session.subjectId = myclass._subject;
                                     req.session.classId = myclass.id;
                                     req.session.classname = myclass.classname;
                                  res.redirect('/instructor/'+ myclass.classname+'/coursepage');
-                        
-             });   
-            }); 
+
+             });
+            });
          });
-  
+
 //still work has to be done
-router.route('/:classname/approvalist') 
+router.route('/:classname/approvalist')
         .get(isInstructor, function(req, res){
           QuestionTable.find({issubmitted:true},{_topic:1 ,question:1, status:1, _latestcopy:1, _creator:1, reviewedby:1}).populate('_creator', 'firstname lastname')
           .populate('reviewedby', 'firstname').populate('_topic', 'topicname').exec(function(err, mytable){
-              if(err) throw err; 
+              if(err) throw err;
               res.render('instructor_approval_list' ,{data: mytable, classname: req.params.classname, link:"instructor"});
             });
         });
-    
+
  router.route('/:classname/approvalist/:id')
         .get(isInstructor, function(req, res){
          QuestionArchive.findById(req.params.id).populate('_creator').exec(function(err, submittedquestion){
@@ -190,13 +177,13 @@ router.route('/:classname/approvalist')
                   QuestionArchive.find({_questionid:submittedquestion._questionid}).sort({created_at:1}).exec(function(err, otherarchive){
                     if(err) throw err;
                     res.render('instructor_approval_question_view', {data: otherarchive, current: submittedquestion, link: "instructor", classname: req.params.classname, qid: req.params.id})
-                 })    
-            })     
+                 })
+            })
         })
         .post(isInstructor, function(req, res){
            if(req.body.submission == "approve"){
                var qb = new QuestionBank();
-               qb._subject = req.session.subjectId; 
+               qb._subject = req.session.subjectId;
                qb._class = req.session.classId;
                qb._questionarchiveid = req.params.id;
                qb._creator = req.session.creatorId;
@@ -204,7 +191,7 @@ router.route('/:classname/approvalist')
                qb._topic = req.session.topic;
                qb.options = req.body.options;
                if(req.body.correctanswer) {qb.correctanswer = req.body.correctanswer;}
-               else {qb.correctanswer = req.session.correctanswer;} 
+               else {qb.correctanswer = req.session.correctanswer;}
                qb.explanation = req.body.explanation;
                qb.save(function(err, myqb){
                 if(err) throw err;
@@ -222,11 +209,11 @@ router.route('/:classname/approvalist')
                      }}, function(err, updatedqt){
                         if(err) throw err;
                         res.redirect('/instructor/' + req.params.classname + '/approvalist')
-                     }) 
-                  })   
-               })    
+                     })
+                  })
+               })
           } else if(req.body.submission == "revision"){
-                var archive = QuestionArchive(); 
+                var archive = QuestionArchive();
                   archive._subject = req.session.subjectId;
                   archive._class = req.session.classId;
                   archive._creator = req.session.userId;
@@ -238,18 +225,18 @@ router.route('/:classname/approvalist')
                   if(req.body.correctanswer){archive.correctanswer = req.body.correctanswer;}
                   else{archive.correctanswer = req.session.correctanswer;}
                   archive.explanation = req.body.explanation;
-                  archive.isinstructoredit = true;     
+                  archive.isinstructoredit = true;
                   archive.comment = req.body.comment;
                   archive.save(function(err, myarchive){
                     QuestionTable.findById(req.session.questionId).exec(function(err, myqt){
                         myqt.reviewedby = req.session.userId;
-                        myqt.comment = req.body.comment;   
+                        myqt.comment = req.body.comment;
                         myqt.status = "Needs Revision";
                         myqt._latestcopy = myarchive.id;
                         myqt.save();
                         res.redirect('/instructor/' + req.params.classname + '/approvalist')
                     })
-                  })  
+                  })
           } else {
                 QuestionTable.findById(req.session.questionId).exec(function(err, myqt){
                         myqt.reviewedby = req.session.userId;
@@ -259,10 +246,10 @@ router.route('/:classname/approvalist')
                         res.redirect('/instructor/' + req.params.classname + '/approvalist')
                     })
           }
-        }) 
+        })
 
 
-//should create pages for this 
+//should create pages for this
 router.route('/:classname/questionbank')
      .get(isInstructor, function(req, res){
         QuestionBank.find({}).populate('_creator', 'firstname lastname').populate('_topic', 'topicname').sort({created_at:1}).exec(function(err, qb){
@@ -277,11 +264,17 @@ router.route('/:classname/questionbank/:id')
           if (err) throw err;
           res.render('instructor_questionbank_view', {current: myquestion, link:"instructor", classname:req.params.classname})
         })
-      })                
+      })
 
 
 
-
+router.route('/:classname/teams')
+  .get(isInstructor, function(req, res){
+    Team.find({"_class":req.session.classId}).populate('_creator _members').exec(function(err, myteam){
+      console.log(myteam);
+      res.send("done");
+    })
+  })
 
 
 module.exports = router;

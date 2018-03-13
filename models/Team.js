@@ -7,7 +7,7 @@ var TeamSchema = mongoose.Schema({
     _creator:{type: mongoose.Schema.Types.ObjectId, ref:'User', required:true},
     teamname: {type:String, required:true},
     token:{type:Number, required:true},
-    members:[{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true}],
+    _members:[{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true}],
     created_at:{type:Date, default:Date.now}
      });
 

@@ -80,7 +80,7 @@ router.route('/:classname/newteam')
             newteam._class = req.session.classId;
             newteam.teamname = req.body.teamname;
             newteam._creator = req.session.userId;
-            newteam.members = req.session.userId;
+            newteam._members = req.session.userId;
             newteam.token = Math.floor(Math.random() * 100000);
             newteam.save(function(err,myteam){
               if (err) throw err;
@@ -105,6 +105,8 @@ router.route('/:classname/jointeam')
                                     return res.render("error",{ error:"Invalid team token"});
                                   }
             req.session.teamId = myteam.id
+            myteam._members.push(req.session.userId)
+            myteam.save()
            User.findById(req.session.userId).exec(function(err, myuser){
             myuser._currentteam = myteam.id
             myuser._teams.push(myteam.id)
@@ -203,7 +205,7 @@ router.route('/:classname/createquestion')
 //
 router.route('/:classname/myquestions')
         .get(isLoggedIn, function(req, res){
-                    QuestionTable.find({_creator:req.session.userId},{question:1, _latestcopy:1, issubmitted:1, status:1, _topic:1, created_at:1}).populate('_topic', 'topicname').exec(function(err, myquestions){
+                    QuestionTable.find({_team:req.session.teamId},{question:1, _latestcopy:1, issubmitted:1, status:1, _topic:1, created_at:1}).populate('_topic', 'topicname').exec(function(err, myquestions){
                         if(err) throw err;
                         res.render('student_myquestion', {data:myquestions, link:"student", classname: req.params.classname});
                     })
@@ -224,8 +226,10 @@ router.route('/:classname/myquestions/:id')
               else {
                  req.session.topicId = myquestion._topic;
                  req.session.questionId = myquestion._questionid;
-                 QuestionArchive.find({_questionid:myquestion._questionid}).sort({created_at:1}).exec(function(err, myarchive){
+                 QuestionArchive.find({_questionid:myquestion._questionid}).populate('_editor', 'firstname lastname').sort({created_at:1}).exec(function(err, myarchive){
                     if(err) throw err;
+                    console.log(myarchive);
+                    req.session.creator = myarchive[0]._creator
                     res.render('student_edit', {data: myarchive, current: myquestion, link: "student", classname: req.params.classname, qid: req.params.id})
                  })
               }
@@ -235,7 +239,7 @@ router.route('/:classname/myquestions/:id')
                  var archive = new QuestionArchive();
                   archive._subject = req.session.subjectId;
                   archive._class = req.session.classId;
-                  archive._creator = req.session.userId;
+                  archive._creator = req.session.creator;
                   archive._topic = req.session.topicId;
                   archive._editor = req.session.userId;
                   archive._questionid =  req.session.questionId;

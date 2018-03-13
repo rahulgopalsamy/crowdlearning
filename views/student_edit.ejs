@@ -13,7 +13,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    
+
 </head>
 <body>
   <nav>
@@ -31,7 +31,7 @@
 
                          <div class="col s8">
                                   <form method="post" action="/student/<%=classname%>/myquestions/<%=qid%>">
-                                    
+
                                     <div class="card  blue-grey lighten-5">
                                     <div class="card-content black-text">
                                       <div class="row"><h5>Question Body</h5>
@@ -39,21 +39,21 @@
                                       </div>
                                       </div>
                                     </div>
-                                    
+
                                     <div class="card  blue-grey lighten-5">
                                     <div class="card-content black-text">
                                        <h5>Answer/Distractors</h5>
                                       <% for(var i=0; i < current.options.length; i++) { %>
-                                      
+
                                           <h8><b>Option<%=i+1%></b></h8>
-                                      <div class="input_fields_wrap">  
+                                      <div class="input_fields_wrap">
                                         <input name="options" type="text" id="option<%=i%>" value="<%-current.options[i]%>"/>
                                               </div>
-                                              
-                                      
-                
+
+
+
               <% } %>
-                                        
+
                                         <br><h8><b>The right answer is <%- current.correctanswer%></b></h8>
                                         <br><h8>Change the answer:</h8>
                                       </div>
@@ -74,15 +74,15 @@
 
                                     <h5>Explanation</h5>
                                     <textarea id="textarea2" name="explanation" class="materialize-textarea" required><%- current.explanation%></textarea>
-                                      </div>  
-                                      </div> 
+                                      </div>
+                                      </div>
 
                                   <div class="card  blue-grey lighten-5">
                                   <div class="card-content black-text">
                                     <h5>Description of Change</h5>
                                     <textarea id="changedescription" name="changedescription" class="materialize-textarea" ></textarea>
                                   </div></div>
-                  
+
                                     <div class="row center">
                                     <div class= "col s4">
                                         <button class="btn waves-effect waves-light orange z-depth-4" name="submission" value="draft" type="submit">Draft</button>
@@ -97,12 +97,13 @@
                                 <h5> Previous Versions:</h5>
                                   <% if(data.length > 1) { %>
                                         <% for(var i=0; i < data.length; i++) { %>
-                                    <a href="/student/<%= classname%>/myquestions/<%= data[i].id%>" >   
+                                    <a href="/student/<%= classname%>/myquestions/<%= data[i].id%>" >
                                   <div class="card  blue-grey lighten-5">
                                     <div class="card-content black-text">
                                     <%= i+1%>) <%= data[i].question%>
                                     <hr>
-                                    <%= data[i].changedescription %>
+                                    <%= data[i].changedescription %> <br>
+                                    <small>By: <%= data[i]._editor.firstname%> <%= data[i]._editor.lastname%></small>
                                     </div>
                                     </div>
                                     </a>
@@ -112,7 +113,7 @@
                                     <% } %>
 
                                 </div>
-                     
+
 </div>
 </div>
 
