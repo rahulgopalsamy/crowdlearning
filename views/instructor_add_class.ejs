@@ -11,7 +11,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    
+     <script>
+    $(document).ready(function() {
+    $('select').material_select();
+  });
+    </script>
 </head>
 <body>
   <nav>
@@ -26,23 +30,52 @@
     <div class="container"> 
            <div class="container"> 
     <form id="registration-form" class="col s12 card-panel z-depth-3 top-margin" method="post" action="/instructor/class">
-      <div class="row">
+     <div class="row">
           <fieldset>
               <legend class="orange-text">New Class</legend>
-        
-          <div class="input-field col s12">
-              <i class="material-icons prefix">label</i>
-          <input name="classname" id="icon_prefix" type="text" class="validate" required>
-          <label for="icon_prefix">Class Name</label>
+
+        <div class="input-field col s12">
+            <select id ="subject" name="subject">
+              <option disabled selected>Choose Subject</option>
+                                    <% for(var i=0; i < data.length; i++) { %>
+                                    <option value="<%= data[i]._id%>"><%= data[i].subjectname %></option>
+                                   <% } %>
+                                 
+            </select>
+        <label>Term</label>
+  </div> 
+
+        <div class="input-field col s12">
+          <input  name="classname" id="class_name" type="text" class="validate" required>
+          <label class="active" for="class_name">Class Name</label>
         </div>
           
+          <div class="input-field col s12">
+          <input name="description" id="Description" type="text">
+          <label class="active" for="Description"> Description</label>
+        </div>
+                  
+        <div class="input-field col s6">
+          <input name="year" placeholder="Academic year" id="year" required>
+          <label class="active" for="email">Year</label>
+        </div>
+
+        <div class="input-field col s6">
+            <select id ="term" name="term">
+              <option disabled selected>Choose term</option>
+              <option value="Fall">Fall</option>
+              <option value="Spring">Spring</option>
+              <option value="Summer">Summer</option>
+            </select>
+        <label>Term</label>
+  </div> 
             <div class="row center">
                <button class="btn waves-effect waves-light orange" type="submit">Submit
     <i class="material-icons right">send</i>
   </button>
               </div>
-          </fieldset>
-        </div>
+
+
     </form>
         
   </div>

@@ -4,19 +4,21 @@ var SALT_WORK_FACTOR = 9;
 var passportLocalMongoose = require("passport-local-mongoose");
 
 var userSchema = mongoose.Schema({
-    firstname:{type:String, required:true},
-    lastname:{type:String, required:true},
-    email:{type: String, required:true, unique:true},
+    firstname:{type:String, required:true, trim:true},
+    lastname:{type:String, required:true, trim:true},
+    email:{type: String, required:true, unique:true, trim:true},
     role:{type: String, enum:['Student','Instructor','Web Admin'], required:true},
-    username: {type:String, required:true, unique:true, lowercase:true},
+    username: {type:String, required:true, unique:true, lowercase:true, trim:true},
+    _currentteam:{type:mongoose.Schema.Types.ObjectId, ref:'Team'},
+    _teams:[{type:mongoose.Schema.Types.ObjectId, ref:'Team'}],
     password:{type: String,required:true},
+    resetPasswordToken:String,
+    resetPasswordExpires: Date,
     created_at:{type:Date, default:Date.now},
     updated_at:Date,
-    _class:[{type:mongoose.Schema.Types.ObjectId, ref:'Class',unique:true}],
-    _questions:[{type:mongoose.Schema.Types.ObjectId, ref:'Question'}],
-    _solved:[{type:mongoose.Schema.Types.ObjectId, ref:'QuestionBank'}],
-    _statistics:[{type:mongoose.Schema.Types.ObjectId, ref:'Statistics'}]
-});
+    lastaccessedclass:String,
+    _class:[{type:mongoose.Schema.Types.ObjectId, ref:'Class',unique:true}]
+  });
 
 
 userSchema.pre('save', function(next) {
@@ -30,11 +32,8 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.createUser = function(newUser, callback){
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt){
-        console.log(salt);
         bcrypt.hash(newUser.password, salt, function(err, hash){
             newUser.password = hash;
-                    console.log(newUser.password);
-
             newUser.save(callback);
         });
     });

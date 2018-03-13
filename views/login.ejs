@@ -20,36 +20,36 @@
       <a href="/" id="brand-image" class="brand-logo center">CrowdLearning</a>
     </div>
   </nav>
-    <div class="container"> 
+    <div class="container">
     <form id="registration-form" class="col s12 card-panel z-depth-3" method="post" action="/user/login">
-      <div class="row">
           <fieldset>
               <legend class="orange-text">Login</legend>
-        
-          <div class="input-field col s12">
-              <i class="material-icons prefix">account_circle</i>
-          <input name="username" id="icon_prefix" type="text" class="validate" required>
-          <label for="icon_prefix">Username</label>
-        </div>
-          
-           <div class="input-field col s12">
-              <i class="material-icons prefix">vpn_key</i>
-          <input name="password" id="icon_prefix" type="password" class="validate" required>
-          <label for="icon_prefix">Password</label>
-        </div>
-            <div class="row center">
-               <button class="btn waves-effect waves-light orange" type="submit">Submit
-    <i class="material-icons right">send</i>
-  </button>
+            
+              <div class="input-field col s6">
+                  <i class="material-icons prefix">account_circle</i>
+              <input name="username" id="icon_prefix" type="text" class="validate" required>
+              <label for="icon_prefix">Username</label>
               </div>
+              
+               <div class="input-field col s6">
+                  <i class="material-icons prefix">vpn_key</i>
+              <input name="password" id="icon_prefix" type="password" class="validate" required>
+              <label for="icon_prefix">Password</label>
+              </div>
+                  
+              <div class="row center">
+                <button class="btn waves-effect waves-light orange" type="submit">Submit
+                  <i class="material-icons right">send</i>
+                </button>
           </fieldset>
-        </div>
+      </div>
     </form>
-        <div class="row center" style="margin-top:40px;">
-        <a href="/user/register">Create account</a>
-        </div>
         
-  </div>
+        <div class="row center" style="margin-top:40px;">
+        <a href="/user/signup">Don't have an account?</a>
+        </div>
+     </div>
+
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

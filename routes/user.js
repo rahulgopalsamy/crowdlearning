@@ -6,27 +6,27 @@ var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 
-// database connection to this route 
+// database connection to this route
 var User = require ('../models/User');
 var isLoggedIn = require('./middleware/isLoggedIn');
 
 
 //rendering Registration Form for the user
-router.get('/register', function(req, res){
-    res.render('registration');
+router.get('/signup', function(req, res){
+    res.render('signup');
 });
 
-//Registering user into crowdlearning application 
+//Registering user into crowdlearning application
 
-router.post('/register', function(req,res){
+router.post('/signup', function(req,res){
     if (req.body.role == "Instructor"){
-        if(req.body.passcode != "cl2017an") return res.render("error",{error:"Sorry the passcode is wrong, please go back and try again"});  
+        if(req.body.passcode != "cl2017an") return res.render("error",{error:"Sorry the passcode is wrong, please go back and try again"});
     }
      var newUser = new User({
-        firstname:req.body.firstname, 
-        lastname:req.body.lastname, 
-        email:req.body.email, 
-        role:req.body.role, 
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
+        email:req.body.email,
+        role:req.body.role,
         username:req.body.username,
         ub_number:req.body.ubnumber,
         password:req.body.password
@@ -41,8 +41,8 @@ router.post('/register', function(req,res){
             req.login(user, function(err){
                 if(err){
                     res.send(err);
-                }             
-            return res.render("login");
+                }
+             res.redirect("/user/login");
             });
         }
     });
@@ -67,8 +67,9 @@ router.post('/login', function(req, res, done){
             if(user.role=="Student"){
             req.session.student = user.firstname;
             req.session.userId = user._id;
-            res.redirect('/student/home');
-            return done(null,user); 
+            req.session.teamId = user._currentteam;
+            res.redirect('/student/course');
+            return done(null,user);
             }else {
              req.session.instructor = user.firstname;
              req.session.userId = user._id;
@@ -81,26 +82,10 @@ router.post('/login', function(req, res, done){
 
 
 router.get("/logout", function(req, res) {
-        req.session.classname = null;
-        req.session.userId = null;
-        req.session.instructor = null;
-        req.session.questionId = null;
-        req.session.classId = null;
-        req.session.student=null;
         req.session.destroy();
          req.logout();
          res.redirect("/");
 });
 
-/*
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) { 
-    done(err, user);
-  });
-});
-*/
  module.exports = router;

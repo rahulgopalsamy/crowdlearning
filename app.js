@@ -1,30 +1,50 @@
+
+//Basic functionalities
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+
+//Database connections
 var MongoDBStore = require('connect-mongodb-session')(session);
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var dbConfig = require('./db.js');
+mongoose.Promise = global.Promise;
+
+//User Authentication
+var nodemailer = require('nodemailer');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt-nodejs');
+var async = require('async');
+var crypto = require('crypto');
+
+//Image upload
+var fs = require('fs');
+var multer = require('multer');
+require('events').EventEmitter.prototype._maxListeners = 100;
+
+//Add on modules
 var assert = require('assert');
 var logger = require('winston');
-require('events').EventEmitter.prototype._maxListeners = 100;
-mongoose.Promise = global.Promise;
+
 //data model for passport module
 User = require("./models/User");
 
 //database connection
-mongoose.connect(dbConfig.url,{ mongos: true })
+mongoose.connect(dbConfig.url)
 
+//Routes 
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var student = require('./routes/student');
 var instructor = require('./routes/instructor');
 
+//App Starting point
 var app = express();
 
 
@@ -50,10 +70,12 @@ app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({secret: 'session secret key'}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
-app.use(require('express-session')({
+app.use(require('express-session')({ 
       secret: 'This is a secret',
       cookie: {
         maxAge: 1000 * 60 * 60 * 20 
@@ -62,6 +84,15 @@ app.use(require('express-session')({
       resave: true,
       saveUninitialized: true
     }));
+
+
+app.use(multer({ 
+    dest: './uploads/',
+    rename: function (fieldname, filename) {
+        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+    }
+}).single('file'));
+
 
 //middleware supporting PASSPORT module
 app.use(passport.initialize());

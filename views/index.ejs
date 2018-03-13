@@ -9,25 +9,66 @@
   <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link rel="icon"  type="image/png" href="../img/crowdlearning.png">
       <link href="/css/animate.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <script type="text/javascript">
+        $(document).ready(function(){
+            $('.modal-trigger').leanModal();
+              }); 
+      </script>
 </head>
-<body>
-  <nav>
-    <div class="nav-wrapper">
-      <img src="/img/crowdlearning.png" width="50" height="50" id="brand-image" class="brand-logo">
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <a href="/user/login" class="waves-effect waves-light btn orange z-depth-3" id="login"><i class="material-icons left">perm_identity</i>Login</a>      
+<body class="welcome">
+  <span id="splash-overlay" class="splash"></span>
+  <span id="welcome" class="z-depth-4"></span>
+
+  <header class="navbar-fixed">
+    <nav class="row  blue-grey darken-2">
+      <div class="col s12">
+        <ul class="right">
+          <li class="right">
+            <a href="" target="_blank" class="fa fa-facebook-square fa-2x waves-effect waves-light"><span class="icon-text"></span></a>
+          </li>
+          <li class="right">
+            <a href="" target="_blank" class="fa fa-github-square fa-2x waves-effect waves-light"><span class="icon-text"></span></a>
+          </li>
         </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="valign-wrapper">
+    <span class="container grey-text text-lighten-1 ">
+
+      <p class="flow-text">Welcome to</p>
+      <h1 class="title grey-text text-lighten-3">Crowdlearning</h1>
+
+      <blockquote class="flow-text">Collaborative e-Learning application for subject focused problem posing and solving</blockquote>
+
+      <div class="center-align">
+        <a class="btn dropdown-button orange z-depth-3" href="/user/signup" data-activates="exams">Get Started</a>
+        <a class="btn dropdown-button orange z-depth-3" href="/user/login" data-activates="study"><i class="material-icons left">perm_identity</i>Login</a>
+
+        <!-- Dropdown Structure -->
+        <ul id="study" class="dropdown-content">
+          <li><a href="#!">mathematics</a></li>
+          <li><a href="#!">reading</a></li>
+          <li><a href="#!">science</a></li>
+          <li><a href="#!">social studies</a></li>
+          <li><a href="#!">writing</a></li>
+        </ul>
+      </div>
+
+    </span>
+  </main>
+
+
+
+  <footer class="page-footer  blue-grey darken-2">
+    <div class="footer-copyright  blue-grey darken-3">
+      <div class="container">
+        <time datetime="{{ site.time | date: '%Y' }}">&copy; University at Buffalo</time>
+      </div>
     </div>
-  </nav>
-    <div class="container">
-        <h1 class="header center light-blue-text animated zoomIn">CROWDLEARNING</h1>
-        <div class="row center">
-        <p>Collaborative e-Learning application for subject focused problem posing and solving</p>
-        </div>
-    <div class="row center">
-       <a href="/user/register" class="waves-effect waves-light btn-large orange z-depth-4">Get Started</a>
-        </div>
-    </div>
+  </footer>
+
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

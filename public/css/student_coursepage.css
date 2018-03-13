@@ -1,3 +1,8 @@
 .top-margin{
     margin-top: 75px;
 }
+.card .card-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 300;
+}
