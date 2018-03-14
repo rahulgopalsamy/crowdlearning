@@ -20,7 +20,7 @@ router.get('/signup', function(req, res){
 
 router.post('/signup', function(req,res){
     if (req.body.role == "Instructor"){
-        if(req.body.passcode != "cl2017an") return res.render("error",{error:"Sorry the passcode is wrong, please go back and try again"});
+        if(req.body.passcode != "") return res.render("error",{error:"Sorry the passcode is wrong, please go back and try again"});
     }
      var newUser = new User({
         firstname:req.body.firstname,
@@ -73,6 +73,7 @@ router.post('/login', function(req, res, done){
             }else {
              req.session.instructor = user.firstname;
              req.session.userId = user._id;
+
              res.redirect('/instructor/home');
              return done(null,user);
             }

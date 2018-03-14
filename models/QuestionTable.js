@@ -7,7 +7,7 @@ var QuestionTableSchema = mongoose.Schema ({
     _creator:{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true},
     _forked:{type:mongoose.Schema.Types.ObjectId, ref:'QuestionArchive'},
     question : {type : String, required:true},
-    _team:{type: mongoose.Schema.Types.ObjectId, ref:'Team', required:true},
+    _team:{type: mongoose.Schema.Types.ObjectId, ref:'Team'},
     _latestcopy : {type: mongoose.Schema.ObjectId, ref:'QuestionArchive'},
     issubmitted:{type:Boolean, default:false},
     status:{type: String, enum:['Approved','Working','Under Review','Rejected','Needs Revision'], required:true, default:"Working"},

@@ -80,7 +80,7 @@ router.route('/:classname/addtopic')
                 if(myclass._topic) topics = myclass._topic;
                 req.session.classId = myclass._id;
                 req.session.classname = myclass.classname;
-                req.session.subjectId = myclass.subjectId;
+                req.session.subjectId = myclass._subject;
 
                 return res.render('instructor_add_topic',{link:"instructor", token:myclass.accesstoken ,classname:myclass.classname, data:topics});
             })
@@ -125,7 +125,22 @@ router.route('/:classname/createquestion')
             })
          })
         .post(isInstructor, function(req,res){
-             if (req.body.submission === "final") res.send("final")
+             if (req.body.submission === "final") {
+              var qb = new QuestionBank()
+               qb._subject = req.session.subjectId;
+               qb._class = req.session.classId;
+               qb._creator = req.session.userId;
+               qb.question = req.body.question;
+               qb._topic = req.body.topic;
+               qb.isinstructorcreated = true;
+               qb.options = req.body.options;
+               qb.correctanswer = req.body.correctanswer;
+               qb.explanation = req.body.explanation;
+               qb.save(function(err, myquestion){
+                if(err) throw err;
+                  res.redirect('/instructor/'+req.params.classname+'/createquestion')
+               })
+             }
               else res.send("draft")
               });
 
@@ -270,9 +285,8 @@ router.route('/:classname/questionbank/:id')
 
 router.route('/:classname/teams')
   .get(isInstructor, function(req, res){
-    Team.find({"_class":req.session.classId}).populate('_creator _members').exec(function(err, myteam){
-      console.log(myteam);
-      res.send("done");
+    User.find({"role":"Student"}).populate('_currentteam').exec(function(err, myuser){
+      res.render("instructor_team_view",{data:myuser, classname: req.params.classname} );
     })
   })
 

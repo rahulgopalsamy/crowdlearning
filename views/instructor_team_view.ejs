@@ -2,55 +2,59 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>CL | <%= classname%></title>
+  <title>CL | Teams</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="/css/student_coursepage.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-
 
         <link rel="icon"  type="image/png" href="/img/crowdlearning.png">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
 </head>
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a id="brand-image" class="brand-logo">CrowdLearning</a>
+      <a  id="brand-image" class="brand-logo">CrowdLearning</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li class="active"><a href="#"><%= classname%></a></li>
-        <li><a href="/<%= link%>/home">Course</a></li>
+            <li><a href="/instructor/<%=classname%>/coursepage"><%= classname%></a></li>
+        <li><a href="/instructor/home">Course</a></li>
         <li><a href="/user/logout">Logout</a></li>
       </ul>
     </div>
   </nav>
-    <div class="container">
-        <div class="row center">
-        <div class="col s12">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Questions</span>
-              <p>Access all the questions created for this class.</p>
-            </div>
-            <div class="card-action">
-              <a href="/instructor/<%= classname%>/approvalist">Submitted Questions</a> | &emsp;
-              <a href="/instructor/<%= classname%>/questionbank">Question Bank</a> | &emsp;
-              <a href="/instructor/<%= classname%>/createquestion">Create new question</a>
-            </div>
-          </div>
-        </div>
-       </div>
+     <div class="container">
+      <div clas="row top-margin">
+          <h4 class="orange-text"> Team Assignment: </h4>
+                  <% if(data.length > 0){ %>
+
+                       <table style="width:100%">
+                                <tr>
+                                  <th>No.</th>
+                                  <th>Firstname</th>
+                                  <th>Lastname</th>
+                                  <th>Team</th>
+                                </tr>
+                    <% for(var i=0; i < data.length; i++) { %>
+                                <tr>
+                                  <td><%= i+1%></td>
+                                  <td><%= data[i].firstname %></td>
+                                  <td>   <%= data[i].lastname %></td>
+                                  <td><%= data[i]._currentteam.teamname%></td>
+                                </tr>
+                                  <% } %>
+
+                              </table>
+                   <% } else{ %>
+                     <h5>Students are yet to register for the class</h5>
+                  <% } %>
 
 
 
-
-          <div class="row center top-margin">
-            <a href="/instructor/<%=classname%>/addtopic">Add Topics</a> &emsp; &emsp; &emsp;  | &emsp; &emsp; &emsp; <a href="/instructor/<%=classname%>/teams"> View teams</a>
           </div>
 
   </div>
-
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
