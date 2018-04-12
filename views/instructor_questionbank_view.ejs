@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>CL | Question</title>
+  <title>Question</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -13,7 +13,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script  src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    
+
 </head>
 <body>
   <nav>
@@ -36,14 +36,14 @@
                                       </div>
                                       </div>
                                     </div>
-                                    
+
                                     <div class="card  blue-grey lighten-5">
                                     <div class="card-content black-text">
                                        <h5>Answer/Distractors</h5>
                                       <% for(var i=0; i < current.options.length; i++) { %>
                                                    <%= i+1%>) <%=current.options[i]%> <br>
                                                            <% } %>
-                                        
+
                                         <br><h8><b>The right answer is <%= current.correctanswer%></b></h8>
                                          </div>
 
@@ -54,11 +54,11 @@
 
                                     <h5>Explanation</h5>
                                     <%= current.explanation%>
-                                      </div>  
-                                      </div> 
+                                      </div>
+                                      </div>
                                 </div>
-                                
-                     
+
+
 </div>
 <div class="row center">
   <a href="/instructor/<%=classname%>/questionbank"> Go back</a>

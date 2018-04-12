@@ -6,7 +6,7 @@ var QuestionBankSchema = mongoose.Schema({
     _class:{type: mongoose.Schema.Types.ObjectId, ref:'Class', required:true},
     _questionarchiveid: {type:mongoose.Schema.Types.ObjectId, ref:'QuestionArchive'},
     _creator:{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true},
-    _topic : {type: mongoose.Schema.Types.ObjectId, ref:'Topic', required:true},
+    _topic : {type: mongoose.Schema.Types.ObjectId, ref:'Topic'},
     question : {type : String, required:true},
     options : [{type:String}],
     isinstructorcreated: {type:Boolean, default:false},
@@ -17,5 +17,7 @@ var QuestionBankSchema = mongoose.Schema({
     wrong:{type:Number, default:0},
     created_at:{type:Date, default:Date.now}
      });
+
+QuestionBankSchema.index({_topic:1, _creator:1});
 
 module.exports = mongoose.model('QuestionBank', QuestionBankSchema);

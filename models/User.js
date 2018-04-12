@@ -1,9 +1,8 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR = 9;
-var passportLocalMongoose = require("passport-local-mongoose");
+const mongoose = require('mongoose'),
+      bcrypt = require('bcrypt'),
+      SALT_WORK_FACTOR = 9;
 
-var userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     firstname:{type:String, required:true, trim:true},
     lastname:{type:String, required:true, trim:true},
     email:{type: String, required:true, unique:true, trim:true},
@@ -17,12 +16,12 @@ var userSchema = mongoose.Schema({
     created_at:{type:Date, default:Date.now},
     updated_at:Date,
     lastaccessedclass:String,
-    _class:[{type:mongoose.Schema.Types.ObjectId, ref:'Class',unique:true}]
+    _class:[{type:mongoose.Schema.Types.ObjectId, ref:'Class'}]
   });
 
 
 userSchema.pre('save', function(next) {
-  var currentDate = new Date();
+  let currentDate = new Date();
   this.updated_at = currentDate;
   if (!this.created_at)
   this.created_at = currentDate;
@@ -39,6 +38,6 @@ userSchema.methods.createUser = function(newUser, callback){
     });
 }
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.index({email:1});
 
 module.exports = mongoose.model('User', userSchema);

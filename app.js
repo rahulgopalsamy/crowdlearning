@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
+const spawn = require('child_process').spawn;
+const process = spawn('python',['hello.py']);
 
 //Database connections
 var MongoDBStore = require('connect-mongodb-session')(session);
@@ -17,8 +19,6 @@ mongoose.Promise = global.Promise;
 
 //User Authentication
 var nodemailer = require('nodemailer');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
@@ -38,7 +38,7 @@ User = require("./models/User");
 //database connection
 mongoose.connect(dbConfig.url)
 
-//Routes 
+//Routes
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var student = require('./routes/student');
@@ -49,7 +49,7 @@ var app = express();
 
 
 app.set('view engine', 'ejs');
-var port = process.env.PORT || 3000;
+var port = 3000;
 // setting store for saving session
 var store = new MongoDBStore(
       {
@@ -75,10 +75,10 @@ app.use(session({secret: 'session secret key'}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
-app.use(require('express-session')({ 
+app.use(require('express-session')({
       secret: 'This is a secret',
       cookie: {
-        maxAge: 1000 * 60 * 60 * 20 
+        maxAge: 1000 * 60 * 60 * 20
       },
       store: store,
       resave: true,
@@ -86,7 +86,7 @@ app.use(require('express-session')({
     }));
 
 
-app.use(multer({ 
+app.use(multer({
     dest: './uploads/',
     rename: function (fieldname, filename) {
         return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
@@ -94,12 +94,6 @@ app.use(multer({
 }).single('file'));
 
 
-//middleware supporting PASSPORT module
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 
 //middleware for routes conncetion
@@ -112,3 +106,5 @@ mongoose.set('debug', true);
 app.listen(port);
 
 console.log('The app is running on port ' + port);
+
+

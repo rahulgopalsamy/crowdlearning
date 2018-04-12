@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>CL | <%= classname%></title>
+  <title><%= classname%></title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/student_coursepage.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -42,6 +42,19 @@
         </div>
        </div>
 
+<div class="row center">
+        <div class="col s12">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Quiz</span>
+            </div>
+            <div class="card-action">
+              <a href="/instructor/<%= classname%>/quiz/create">Create new Quiz</a> | &emsp;&emsp;&emsp;&emsp;&emsp;
+              <a href="/instructor/<%= classname%>/quiz/performance">Quiz Performance</a>
+            </div>
+          </div>
+        </div>
+       </div>
 
 
 

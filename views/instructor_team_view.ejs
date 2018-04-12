@@ -41,7 +41,12 @@
                                   <td><%= i+1%></td>
                                   <td><%= data[i].firstname %></td>
                                   <td>   <%= data[i].lastname %></td>
-                                  <td><%= data[i]._currentteam.teamname%></td>
+                                  <td><% if(data[i]._currentteam){ %>
+                                           <%= data[i]._currentteam.teamname%>
+                                         <% } else{ %>
+
+                                        <% } %>
+                                  </td>
                                 </tr>
                                   <% } %>
 

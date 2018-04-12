@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>CL | Home</title>
+  <title><%=classname%></title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/common.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -33,11 +33,14 @@
               <p>Create a new question or collaborate with your team using appropriate link below</p>
             </div>
             <div class="card-action">
-              <a href="/student/<%=classname%>/createquestion">Create new Question</a> |
-              <a href="#">Collaborate</a>
+              <a href="/student/<%=classname%>/createquestion">Create new Question</a>
             </div>
           </div>
         </div>
+        </div>
+        <div class="row center">
+            <a href="/student/<%=classname%>/quiz/">Take Quiz</a>&emsp;&emsp; | &emsp; &emsp;
+            <a href="/student/<%=classname%>/quiz/score">Quiz Performance</a>
         </div>
 <div class ="row">
   <br>
@@ -48,7 +51,13 @@
               <% for(var i=0; i < data.length; i++) { %>
 
                     <li class="collection-item">
-                      <%= i+1%>) <span class="title"> <%= data[i]._topic.topicname%></span>
+                      <%= i+1%>) <span class="title"> <% if(data[i]._topic){ %>
+                                                          <%= data[i]._topic.topicname%>
+                                                         <% } else{ %>
+                                                           <b>Unknown</b>
+                                                        <% } %>
+
+                                  </span>
                       <p> <%= data[i].question %> </p>
                       Status: <b><%= data[i].status%> </b>
                       <a href="/student/<%=classname%>/myquestions/<%= data[i]._latestcopy%>" class="secondary-content"><i class="material-icons">grade</i></a>
@@ -58,7 +67,7 @@
            <% } else{ %>
              <div class= "row center">
               <div class="red-text">
-                     <h5> You have not created questions yet! </h5>
+                     <h6> You have not created questions yet! </h6>
                </div>
              </div>
           <% } %>
