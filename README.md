@@ -12,3 +12,5 @@ The platform is created as a part of research by University at Buffalo.
 Point of contact: Dr. Alexander Nikolaev, Assistant Professor, 312 Bell Hall, University at Buffalo
 (anikolae@buffalo.edu)
 
+The website can be currently accessed at http://174.138.86.36:3000/
+
